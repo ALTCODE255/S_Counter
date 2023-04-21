@@ -8,7 +8,7 @@ from pystray import Icon, Menu, MenuItem
 from string import printable
 
 
-gc = pygsheets.authorize(service_file="creds.json")
+gc = pygsheets.authorize(service_file="gsheets.json")
 sh = gc.open("The Sheet of Series that Start with S")
 wks = sh[0]
 
