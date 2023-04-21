@@ -15,13 +15,8 @@ sh = gc.open("The Sheet of Series that Start with S")
 wks = sh[1]
 
 
-def isInstances() -> bool:
-	return wks.get_value("B2", value_render=pygsheets.ValueRenderOption.UNFORMATTED_VALUE) == "TRUE"
-
-
 def getStats() -> str:
 	return wks.get_value("B2", value_render=pygsheets.ValueRenderOption.UNFORMATTED_VALUE)
 
 
-if isInstances():
-	client.create_tweet(text=getStats())
+client.create_tweet(text=getStats())
