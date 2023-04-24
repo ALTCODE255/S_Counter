@@ -6,7 +6,7 @@ from PIL import Image
 from plyer import notification
 from pystray import Icon, Menu, MenuItem
 from string import printable
-
+from itertools import product
 
 gc = pygsheets.authorize(service_file="gsheets.json")
 sh = gc.open("The Sheet of Series that Start with S")
@@ -46,18 +46,17 @@ def incCounter(counter):
         timeout=1
     )
 
+sonic = list(map(''.join, product(*zip("sonic".upper(), "sonic".lower()))))
+shuuen = list(map(''.join, product(*zip("shuuen".upper(), "shuuen".lower()))))
 
-
-s1_list = ["sonic", "Sonic", "SONIC"]
-s2_list = ["shuuen", "Shuuen", "SHUUEN"]
-
-for sonic in s1_list:
+for case in sonic:
     keyboard.add_word_listener(
-        sonic, lambda: incCounter("Sonic"), triggers=["space", "enter"] + [*printable], match_suffix=True
+        case, lambda: incCounter("Sonic"), triggers=["space", "enter"] + [*printable],
+        match_suffix=True
     )
-for shuuen in s2_list:
+for case in shuuen:
     keyboard.add_word_listener(
-        shuuen, lambda: incCounter("Shuuen"), triggers=["space", "enter"] + [*printable],
+        case, lambda: incCounter("Shuuen"), triggers=["space", "enter"] + [*printable],
         match_suffix=True
     )
 
