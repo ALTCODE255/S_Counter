@@ -18,7 +18,7 @@ def rowGet() -> str:
     initial_date = date(2020, 8, 22)
     today = datetime.now() + timedelta(minutes=5)
     delta = today.date() - initial_date
-    return str(delta.days + 4)
+    return str(delta.days + 3)
 
 
 def getCount(col: str) -> int:
@@ -45,6 +45,7 @@ def incCounter(counter):
         app_icon="icon.ico",
         timeout=1
     )
+
 
 sonic = list(map(''.join, product(*zip("sonic".upper(), "sonic".lower()))))
 shuuen = list(map(''.join, product(*zip("shuuen".upper(), "shuuen".lower()))))
