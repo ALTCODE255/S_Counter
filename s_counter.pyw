@@ -21,7 +21,7 @@ def rowGet() -> str:
 
 
 def getCount(col: int) -> int:
-    s.refresh()
+    wks.refresh()
     return int(wks.get(col, rowGet()))
 
 
