@@ -1,11 +1,8 @@
 import tweepy
-import pygsheets
+import ezsheets
 import json
-import os
 
-directory = os.path.realpath(os.path.dirname(__file__))
-
-with open(directory + "/creds.json") as credentials:
+with open("creds.json") as credentials:
     keys = json.load(credentials)
 
 client = tweepy.Client(
@@ -15,15 +12,12 @@ client = tweepy.Client(
     access_token_secret=keys["access_token_secret"],
 )
 
-gc = pygsheets.authorize(service_file=directory + "/gsheets.json")
-sh = gc.open("The Sheet of Series that Start with S")
-wks = sh[1]
+s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
+wks = s[1]
 
 
 def getStats() -> str:
-    return wks.get_value(
-        "B2", value_render=pygsheets.ValueRenderOption.UNFORMATTED_VALUE
-    )
+    return wks.get(2, 2)
 
 
 client.create_tweet(text=getStats())

@@ -1,6 +1,6 @@
 import keyboard
 import os
-import pygsheets
+import ezsheets
 from datetime import date, datetime, timedelta
 from PIL import Image
 from plyer import notification
@@ -8,9 +8,8 @@ from pystray import Icon, Menu, MenuItem
 from string import printable
 from itertools import product
 
-gc = pygsheets.authorize(service_file="gsheets.json")
-sh = gc.open("The Sheet of Series that Start with S")
-wks = sh[0]
+s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
+wks = s[0]
 
 
 def rowGet() -> str:
@@ -18,26 +17,21 @@ def rowGet() -> str:
     initial_date = date(2020, 8, 22)
     today = datetime.now() + timedelta(minutes=5)
     delta = today.date() - initial_date
-    return str(delta.days + 3)
+    return delta.days + 3
 
 
-def getCount(col: str) -> int:
-    return int(
-        wks.get_value(
-            col + rowGet(),
-            value_render=pygsheets.ValueRenderOption.UNFORMATTED_VALUE,
-        )
-    )
+def getCount(col: int) -> int:
+    s.refresh()
+    return int(wks.get(col, rowGet()))
 
 
 def incCounter(counter):
     if counter == "Sonic":
-        column = "C"
+        column = 3
     elif counter == "Shuuen":
-        column = "B"
-    cell = column + rowGet()
+        column = 2
     current_value = getCount(column)
-    wks.update_value(cell, current_value + 1)
+    wks.update(column, rowGet(), current_value + 1)
     notification.notify(
         title="Counted!",
         app_name="s_counter.pyw",
