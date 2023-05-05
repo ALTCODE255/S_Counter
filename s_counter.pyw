@@ -25,7 +25,7 @@ def getCount(col: int) -> int:
     return int(wks.get(col, rowGet()))
 
 
-def incCounter(counter):
+def incCounter(counter: str):
     if counter == "Sonic":
         column = 3
     elif counter == "Shuuen":
