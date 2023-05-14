@@ -1,12 +1,13 @@
-import keyboard
 import os
-import ezsheets
 from datetime import date, datetime, timedelta
+from itertools import product
+from string import printable
+
+import ezsheets
+import keyboard
 from PIL import Image
 from plyer import notification
 from pystray import Icon, Menu, MenuItem
-from string import printable
-from itertools import product
 
 s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
 wks = s[0]
@@ -37,22 +38,26 @@ def incCounter(counter: str):
         app_name="s_counter.pyw",
         message=f"{counter}: {current_value + 1}",
         app_icon="icon.ico",
-        timeout=1
+        timeout=1,
     )
 
 
-sonic = list(map(''.join, product(*zip("sonic".upper(), "sonic".lower()))))
-shuuen = list(map(''.join, product(*zip("shuuen".upper(), "shuuen".lower()))))
+sonic = list(map("".join, product(*zip("sonic".upper(), "sonic".lower()))))
+shuuen = list(map("".join, product(*zip("shuuen".upper(), "shuuen".lower()))))
 
 for case in sonic:
     keyboard.add_word_listener(
-        case, lambda: incCounter("Sonic"), triggers=["space", "enter"] + [*printable],
-        match_suffix=True
+        case,
+        lambda: incCounter("Sonic"),
+        triggers=["space", "enter"] + [*printable],
+        match_suffix=True,
     )
 for case in shuuen:
     keyboard.add_word_listener(
-        case, lambda: incCounter("Shuuen"), triggers=["space", "enter"] + [*printable],
-        match_suffix=True
+        case,
+        lambda: incCounter("Shuuen"),
+        triggers=["space", "enter"] + [*printable],
+        match_suffix=True,
     )
 
 keyboard.add_hotkey("alt+1", lambda: incCounter("Sonic"))
@@ -65,8 +70,8 @@ icon = Icon(
     title="S Counter",
     menu=Menu(
         MenuItem("Restart", lambda: os.system("s_counter.bat")),
-        MenuItem("Exit", lambda: os.system("taskkill /f /IM pythonw3.11.exe"))
-    )
+        MenuItem("Exit", lambda: os.system("taskkill /f /IM pythonw3.11.exe")),
+    ),
 )
 icon.run()
 keyboard.wait()
