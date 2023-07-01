@@ -74,11 +74,4 @@ icon = Icon(
     ),
 )
 icon.run()
-notification.notify(
-    title="Script Launched",
-    app_name="s_counter.pyw",
-    message=f"Script has been successfully started up.",
-    app_icon="icon.ico",
-    timeout=1,
-)
 keyboard.wait()
