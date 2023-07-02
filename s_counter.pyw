@@ -40,7 +40,7 @@ def incCounter(counter: str):
         f"{counter}: {current_value + 1}",
         threaded=True,
         icon_path=None,
-        duration=3,
+        duration=1,
     )
 
 
