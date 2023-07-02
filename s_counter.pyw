@@ -6,8 +6,10 @@ from string import printable
 import ezsheets
 import keyboard
 from PIL import Image
-from plyer import notification
 from pystray import Icon, Menu, MenuItem
+from win10toast import ToastNotifier
+
+toaster = ToastNotifier()
 
 s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
 wks = s[0]
@@ -33,12 +35,12 @@ def incCounter(counter: str):
         column = 2
     current_value = getCount(column)
     wks.update(column, rowGet(), current_value + 1)
-    notification.notify(
-        title="Counted!",
-        app_name="s_counter.pyw",
-        message=f"{counter}: {current_value + 1}",
-        app_icon="icon.ico",
-        timeout=1,
+    toaster.show_toast(
+        "Counted!",
+        f"{counter}: {current_value + 1}",
+        threaded=True,
+        icon_path=None,
+        duration=3,
     )
 
 
