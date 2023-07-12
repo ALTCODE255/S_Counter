@@ -51,14 +51,14 @@ for case in sonic:
     keyboard.add_word_listener(
         case,
         lambda: incCounter("Sonic"),
-        triggers=["space", "enter"] + [*printable],
+        triggers=["space", "enter"] + list(printable),
         match_suffix=True,
     )
 for case in shuuen:
     keyboard.add_word_listener(
         case,
         lambda: incCounter("Shuuen"),
-        triggers=["space", "enter"] + [*printable],
+        triggers=["space", "enter"] + list(printable),
         match_suffix=True,
     )
 
