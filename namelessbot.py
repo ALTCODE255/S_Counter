@@ -17,7 +17,7 @@ wks = s[1]
 
 
 def getStats() -> str:
-    return wks.get(2, 2)
+    return wks.get("A2")
 
 
 client.create_tweet(text=getStats())
