@@ -6,10 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 client = tweepy.Client(
-    consumer_key=os.getenv["CONSUMER_KEY"],
-    consumer_secret=os.getenv["CONSUMER_SECRET"],
-    access_token=os.getenv["ACCESS_TOKEN"],
-    access_token_secret=os.getenv["ACCESS_TOKEN_SECRET"],
+    consumer_key=os.getenv("CONSUMER_KEY"),
+    consumer_secret=os.getenv("CONSUMER_SECRET"),
+    access_token=os.getenv("ACCESS_TOKEN"),
+    access_token_secret=os.getenv("ACCESS_TOKEN_SECRET"),
 )
 
 s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
