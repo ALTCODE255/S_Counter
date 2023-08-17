@@ -1,15 +1,15 @@
+import os
 import tweepy
 import ezsheets
-import json
+from dotenv import load_dotenv
 
-with open("creds.json") as credentials:
-    keys = json.load(credentials)
+load_dotenv()
 
 client = tweepy.Client(
-    consumer_key=keys["consumer_key"],
-    consumer_secret=keys["consumer_secret"],
-    access_token=keys["access_token"],
-    access_token_secret=keys["access_token_secret"],
+    consumer_key=os.getenv["CONSUMER_KEY"],
+    consumer_secret=os.getenv["CONSUMER_SECRET"],
+    access_token=os.getenv["ACCESS_TOKEN"],
+    access_token_secret=os.getenv["ACCESS_TOKEN_SECRET"],
 )
 
 s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
