@@ -1,3 +1,4 @@
+@ECHO OFF
 :ping
 ping 1.2.3.4 -n 1 -w 1000 > nul
 set target=www.google.com
