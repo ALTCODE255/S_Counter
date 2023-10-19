@@ -1,8 +1,10 @@
 import os
-import tweepy
-from db_functions import getCount, getStatistics, addNewDayRow
-from dotenv import load_dotenv
 from datetime import datetime
+
+import tweepy
+from dotenv import load_dotenv
+
+from db_functions import addNewDayRow, getCount, getStatistics
 
 load_dotenv()
 
