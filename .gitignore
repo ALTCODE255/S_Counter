@@ -1,5 +1,3 @@
 .env
-credentials-sheets.json
-token-drive.pickle
-token-sheets.pickle
+counter.db
 __pycache__/

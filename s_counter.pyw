@@ -1,9 +1,8 @@
 import os
-from datetime import date, datetime, timedelta
+from db_functions import getCount, incCounter
 from itertools import product
 from string import printable
 
-import ezsheets
 import keyboard
 from PIL import Image
 from pystray import Icon, Menu, MenuItem
@@ -11,33 +10,17 @@ from win10toast import ToastNotifier
 
 toaster = ToastNotifier()
 
-s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
-wks = s[0]
+
+def increment(col: str):
+    incCounter(col)
+    showUpdateToast(col)
 
 
-def rowGet() -> str:
-    # grab row # of current date
-    initial_date = date(2020, 8, 22)
-    today = datetime.now() + timedelta(minutes=5)
-    delta = today.date() - initial_date
-    return delta.days + 3
-
-
-def getCount(col: int) -> int:
-    wks.refresh()
-    return int(wks.get(col, rowGet()))
-
-
-def incCounter(counter: str):
-    if counter == "Sonic":
-        column = 3
-    elif counter == "Shuuen":
-        column = 2
-    current_value = getCount(column)
-    wks.update(column, rowGet(), current_value + 1)
+def showUpdateToast(col: str):
+    new_value = getCount(col)
     toaster.show_toast(
         "Counted!",
-        f"{counter}: {current_value + 1}",
+        f"{col}: {new_value}",
         threaded=True,
         icon_path=None,
         duration=1,
@@ -50,20 +33,20 @@ shuuen = list(map("".join, product(*zip("shuuen".upper(), "shuuen".lower()))))
 for case in sonic:
     keyboard.add_word_listener(
         case,
-        lambda: incCounter("Sonic"),
+        lambda: increment("Sonic"),
         triggers=["space", "enter"] + list(printable.strip()),
         match_suffix=True,
     )
 for case in shuuen:
     keyboard.add_word_listener(
         case,
-        lambda: incCounter("Shuuen"),
+        lambda: increment("Shuuen"),
         triggers=["space", "enter"] + list(printable.strip()),
         match_suffix=True,
     )
 
-keyboard.add_hotkey("alt+1", lambda: incCounter("Sonic"))
-keyboard.add_hotkey("alt+2", lambda: incCounter("Shuuen"))
+keyboard.add_hotkey("alt+1", lambda: increment("Sonic"))
+keyboard.add_hotkey("alt+2", lambda: increment("Shuuen"))
 
 
 icon = Icon(

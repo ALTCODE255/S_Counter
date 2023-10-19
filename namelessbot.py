@@ -1,7 +1,8 @@
 import os
 import tweepy
-import ezsheets
+from db_functions import getCount, getStatistics, addNewDayRow
 from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 load_dotenv()
 
@@ -12,12 +13,29 @@ client = tweepy.Client(
     access_token_secret=os.getenv("ACCESS_TOKEN_SECRET"),
 )
 
-s = ezsheets.Spreadsheet("1VyD1fDG6noKldoNCQIhoGNAX7cTwuP8HAI0PViik0k0")
-wks = s[1]
+
+def getTweetText() -> str:
+    today = (datetime.now() + timedelta(minutes=5)).strftime("%m/%d/%Y")
+    overall_stats = getStatistics()
+    s1_stats = overall_stats[0]
+    s2_stats = overall_stats[1]
+    s1 = getCount("Shuuen")
+    s2 = getCount("Sonic")
+    text = f'''\
+#namelessbot [{today}]
+Nameless said "Shuuen" {s1} time{'' if s1 == 1 else 's'} and "Sonic" {s2} time{'' if s2 == 1 else 's'} today.
+
+["Shuuen" Stats]
+- Total: {s1_stats["SUM"]}
+- Average: {s1_stats["AVG"]}
+- Personal Best: {s1_stats["MAX"]}
+
+["Sonic" Stats]
+- Total: {s2_stats["SUM"]}
+- Average: {s2_stats["AVG"]}
+- Personal Best: {s2_stats["MAX"]}'''
+    return text
 
 
-def getStats() -> str:
-    return wks.get("A2")
-
-
-client.create_tweet(text=getStats())
+client.create_tweet(text=getTweetText())
+addNewDayRow()
