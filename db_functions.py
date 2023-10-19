@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from homeassistant_api import Client
 import requests
 
+
 def getCount(col: str) -> int:
     today = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d')
     sqliteConnection = sqlite3.connect("counter.db")
