@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from homeassistant_api import Client
-import requests
 
 
 def getCount(col: str) -> int:
@@ -52,8 +51,7 @@ def getStatistics() -> tuple[dict]:
 
 def updateHomeAssistant(col: str):
     load_dotenv()
-    requests.packages.urllib3.disable_warnings() 
-    with Client(os.getenv("LOCAL_IP"), os.getenv("HA_TOKEN"), verify_ssl=False) as client:
+    with Client(os.getenv("EXTERNAL_IP"), os.getenv("HA_TOKEN")) as client:
         counter = client.get_domain("input_number")
         counter.set_value(value=getCount(col), entity_id=f"input_number.{col.lower()}_counter")
 
