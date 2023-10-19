@@ -2,7 +2,7 @@ import os
 import tweepy
 from db_functions import getCount, getStatistics, addNewDayRow
 from dotenv import load_dotenv
-from datetime import datetime, timedelta
+from datetime import datetime
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ client = tweepy.Client(
 
 
 def getTweetText() -> str:
-    today = (datetime.now() + timedelta(minutes=5)).strftime("%m/%d/%Y")
+    today = datetime.now().strftime("%m/%d/%Y")
     overall_stats = getStatistics()
     s1_stats = overall_stats[0]
     s2_stats = overall_stats[1]

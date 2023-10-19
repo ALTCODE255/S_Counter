@@ -1,12 +1,12 @@
 import sqlite3
+import sys
 from datetime import datetime, timedelta
 
 
 def getCount(col: str) -> int:
-    today = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d')
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
-    cursor.execute(f"SELECT {col} FROM S_Counter WHERE Date = '{today}'")
+    cursor.execute(f"SELECT {col} FROM S_Counter ORDER BY Date DESC LIMIT 1")
     current_count = int(cursor.fetchall()[0][0])
     cursor.close()
     sqliteConnection.close()
@@ -14,10 +14,9 @@ def getCount(col: str) -> int:
 
 
 def incCounter(col: str):
-    today = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d')
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
-    cursor.execute(f"UPDATE S_Counter SET {col} = {col} + 1 WHERE Date = '{today}'")
+    cursor.execute(f"UPDATE S_Counter SET {col} = {col} + 1 WHERE Date = (SELECT MAX(Date) FROM S_Counter)")
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
@@ -56,3 +55,9 @@ def addNewDayRow():
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) >= 2:
+        incCounter(sys.argv[1])
+        print(getCount(sys.argv[1]))
