@@ -1,6 +1,8 @@
 import sqlite3
+import os
+from dotenv import load_dotenv
 from datetime import datetime, timedelta
-
+from homeassistant_api import Client
 
 def getCount(col: str) -> int:
     today = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d')
@@ -21,6 +23,7 @@ def incCounter(col: str):
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
+    updateHomeAssistant(col)
 
 
 def getStatistics() -> tuple[dict]:
@@ -45,6 +48,13 @@ def getStatistics() -> tuple[dict]:
         )
 
 
+def updateHomeAssistant(col: str):
+    load_dotenv()
+    with Client(os.getenv("LOCAL_IP"), os.getenv("HA_TOKEN")) as client:
+        counter = client.get_domain("input_number")
+        counter.set_value(value=getCount(col), entity_id=f"input_number.{col.lower()}_counter")
+
+
 def addNewDayRow():
     today = (datetime.now() + timedelta(minutes=5)).strftime('%Y-%m-%d')
     sqliteConnection = sqlite3.connect("counter.db")
@@ -56,3 +66,5 @@ def addNewDayRow():
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
+    updateHomeAssistant("Shuuen")
+    updateHomeAssistant("Sonic")
