@@ -23,7 +23,7 @@ def getTweetText() -> str:
     s2_stats = overall_stats[1]
     s1 = getCount("Shuuen")
     s2 = getCount("Sonic")
-    text = f'''\
+    text = f"""\
 #namelessbot [{today}]
 Nameless said "Shuuen" {s1} time{'' if s1 == 1 else 's'} and "Sonic" {s2} time{'' if s2 == 1 else 's'} today.
 
@@ -35,7 +35,7 @@ Nameless said "Shuuen" {s1} time{'' if s1 == 1 else 's'} and "Sonic" {s2} time{'
 ["Sonic" Stats]
 - Total: {s2_stats["SUM"]}
 - Average: {s2_stats["AVG"]}
-- Personal Best: {s2_stats["MAX"]}'''
+- Personal Best: {s2_stats["MAX"]}"""
     return text
 
 
