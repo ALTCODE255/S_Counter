@@ -22,7 +22,7 @@ def incCounter(col: str, num: int):
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(
-        f"UPDATE S_Counter SET {col} = {col} + 1 WHERE Date = (SELECT MAX(Date) FROM S_Counter)"
+        f"UPDATE S_Counter SET {col} = {col} + {num} WHERE Date = (SELECT MAX(Date) FROM S_Counter)"
     )
     sqliteConnection.commit()
     cursor.close()
@@ -34,7 +34,7 @@ def getStatistics() -> tuple[dict]:
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(
-        """SELECT
+                    """SELECT
                         SUM(Shuuen), ROUND(AVG(Shuuen), 2), MAX(Shuuen),
                         SUM(Sonic), ROUND(AVG(Sonic), 2), MAX(Sonic)
                     FROM S_Counter"""
