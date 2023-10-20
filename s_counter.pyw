@@ -20,7 +20,9 @@ def updateCount(inc_col: str) -> str:
     client = paramiko.client.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(HOST, PORT, username="pi", password=PASS)
-    _stdin, _stdout, _stderr = client.exec_command(f"cd Projects/S_Counter && python db_functions.py {inc_col}")
+    _stdin, _stdout, _stderr = client.exec_command(
+        f"cd Projects/S_Counter && python db_functions.py {inc_col}"
+    )
     count = _stdout.read().decode()
     client.close()
     return count
