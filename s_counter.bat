@@ -5,4 +5,4 @@ set target=www.google.com
 ping %target% -n 1 | find "TTL="
 if errorlevel==1 goto ping
 taskkill /f /IM pythonw3.11.exe
-start "" pythonw s_counter.pyw
+start "" pythonw bg_script.pyw
