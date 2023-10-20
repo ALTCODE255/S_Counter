@@ -9,7 +9,7 @@ from homeassistant_api import Client
 
 
 def getCount(col: str) -> int:
-    sqliteConnection = sqlite3.connect("counter.db")
+    sqliteConnection = sqlite3.connect(os.getenv("DIR_PATH") + "counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(f"SELECT {col} FROM S_Counter ORDER BY Date DESC LIMIT 1")
     current_count = int(cursor.fetchall()[0][0])
@@ -19,7 +19,7 @@ def getCount(col: str) -> int:
 
 
 def incCounter(col: str, num: int):
-    sqliteConnection = sqlite3.connect("counter.db")
+    sqliteConnection = sqlite3.connect(os.getenv("DIR_PATH") + "counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(
         f"UPDATE S_Counter SET {col} = {col} + {num} WHERE Date = (SELECT MAX(Date) FROM S_Counter)"
@@ -31,7 +31,7 @@ def incCounter(col: str, num: int):
 
 
 def getStatistics() -> tuple[dict]:
-    sqliteConnection = sqlite3.connect("counter.db")
+    sqliteConnection = sqlite3.connect(os.getenv("DIR_PATH") + "counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(
                     """SELECT
@@ -60,7 +60,7 @@ def getStatistics() -> tuple[dict]:
 
 def addNewDayRow():
     today = (datetime.now() + timedelta(minutes=5)).strftime("%Y-%m-%d")
-    sqliteConnection = sqlite3.connect("counter.db")
+    sqliteConnection = sqlite3.connect(os.getenv("DIR_PATH") + "counter.db")
     cursor = sqliteConnection.cursor()
     try:
         cursor.execute(f"INSERT INTO S_Counter (Date) VALUES ('{today}')")
