@@ -7,9 +7,8 @@ import paramiko
 from dotenv import load_dotenv
 from PIL import Image
 from pystray import Icon, Menu, MenuItem
-from win10toast import ToastNotifier
+from plyer import notification
 
-toaster = ToastNotifier()
 load_dotenv()
 
 
@@ -30,13 +29,7 @@ def updateCount(inc_col: str) -> str:
 
 def showUpdateToast(col: str):
     new_value = updateCount(col)
-    toaster.show_toast(
-        "Counted!",
-        f"{col}: {new_value}",
-        threaded=True,
-        icon_path=None,
-        duration=1,
-    )
+    notification.notify(title="Counted!", message=f"{col}: {new_value}", timeout=2)
 
 
 sonic = list(map("".join, product(*zip("sonic".upper(), "sonic".lower()))))
