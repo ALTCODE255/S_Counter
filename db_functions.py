@@ -25,6 +25,7 @@ def incCounter(col: str, num: int):
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
+    updateHomeAssistant()
 
 
 def getStatistics() -> tuple[dict]:
@@ -60,14 +61,17 @@ def addNewDayRow():
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
+    updateHomeAssistant()
 
 
-def updateHomeAssistant(col: str):
+def updateHomeAssistant():
     load_dotenv()
     requests.packages.urllib3.disable_warnings() 
     with Client(os.getenv("INTERNAL_IP"), os.getenv("HA_TOKEN"),  verify_ssl=False) as client:
         counter = client.get_domain("input_number")
-        counter.set_value(value=getCount(col), entity_id=f"input_number.{col.lower()}_counter")
+        counter.set_value(value=getCount("Shuuen"), entity_id="input_number.shuuen_counter")
+        counter.set_value(value=getCount("Sonic"), entity_id="input_number.sonic_counter")
+
 
 
 if __name__ == "__main__":
