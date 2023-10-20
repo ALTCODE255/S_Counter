@@ -29,7 +29,9 @@ def updateCount(inc_col: str) -> str:
 
 def showUpdateToast(col: str):
     new_value = updateCount(col)
-    notification.notify(title="Counted!", message=f"{col}: {new_value}", timeout=2)
+    notification.notify(
+        title="Counted!", message=f"{col}: {new_value}", app_icon="icon.ico", timeout=2
+    )
 
 
 sonic = list(map("".join, product(*zip("sonic".upper(), "sonic".lower()))))
