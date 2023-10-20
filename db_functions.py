@@ -73,7 +73,6 @@ def updateHomeAssistant():
         counter.set_value(value=getCount("Sonic"), entity_id="input_number.sonic_counter")
 
 
-
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
         num = sys.argv[2] if len(sys.argv) > 2 else 1
