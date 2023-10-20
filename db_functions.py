@@ -1,6 +1,11 @@
+import os
 import sqlite3
 import sys
 from datetime import datetime, timedelta
+
+import requests
+from dotenv import load_dotenv
+from homeassistant_api import Client
 
 
 def getCount(col: str) -> int:
@@ -13,7 +18,7 @@ def getCount(col: str) -> int:
     return current_count
 
 
-def incCounter(col: str):
+def incCounter(col: str, num: int):
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(f"UPDATE S_Counter SET {col} = {col} + 1 WHERE Date = (SELECT MAX(Date) FROM S_Counter)")
@@ -57,7 +62,16 @@ def addNewDayRow():
     sqliteConnection.close()
 
 
+def updateHomeAssistant(col: str):
+    load_dotenv()
+    requests.packages.urllib3.disable_warnings() 
+    with Client(os.getenv("INTERNAL_IP"), os.getenv("HA_TOKEN"),  verify_ssl=False) as client:
+        counter = client.get_domain("input_number")
+        counter.set_value(value=getCount(col), entity_id=f"input_number.{col.lower()}_counter")
+
+
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
-        incCounter(sys.argv[1])
+        num = sys.argv[2] if len(sys.argv) > 2 else 1
+        incCounter(sys.argv[1], num)
         print(getCount(sys.argv[1]))

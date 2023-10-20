@@ -1,3 +1,4 @@
 .env
 counter.db
 __pycache__/
+__init__.py
