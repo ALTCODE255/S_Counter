@@ -1,5 +1,5 @@
 export $(xargs <.env)
-sqlite3 -markdown counter.db "SELECT * FROM S_Counter ORDER BY Date Desc" > S_Counter.md;
+sqlite3 -markdown counter.db "SELECT * FROM S_Counter ORDER BY Date Desc" > S_Counter.md
 new_content=$(sed ':a;N;$!ba;s/\n/\\n/g' S_Counter.md)
 curl -L \
   -X PATCH \
