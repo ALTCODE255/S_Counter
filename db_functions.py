@@ -1,11 +1,6 @@
-import os
 import sqlite3
 import sys
 from datetime import datetime, timedelta
-
-import requests
-from dotenv import load_dotenv
-from homeassistant_api import Client
 
 
 def getCount(col: str) -> int:
@@ -27,14 +22,13 @@ def incCounter(col: str, num: int):
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
-    updateHomeAssistant()
 
 
 def getStatistics() -> tuple[dict]:
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(
-                    """SELECT
+        """SELECT
                         SUM(Shuuen), ROUND(AVG(Shuuen), 2), MAX(Shuuen),
                         SUM(Sonic), ROUND(AVG(Sonic), 2), MAX(Sonic)
                     FROM S_Counter"""
@@ -69,26 +63,12 @@ def addNewDayRow():
     sqliteConnection.commit()
     cursor.close()
     sqliteConnection.close()
-    updateHomeAssistant()
-
-
-def updateHomeAssistant():
-    load_dotenv()
-    requests.packages.urllib3.disable_warnings()
-    with Client(
-        os.getenv("INTERNAL_IP"), os.getenv("HA_TOKEN"), verify_ssl=False
-    ) as client:
-        counter = client.get_domain("input_number")
-        counter.set_value(
-            value=getCount("Shuuen"), entity_id="input_number.shuuen_counter"
-        )
-        counter.set_value(
-            value=getCount("Sonic"), entity_id="input_number.sonic_counter"
-        )
 
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2:
+    if len(sys.argv) > 1:
         num = sys.argv[2] if len(sys.argv) > 2 else 1
         incCounter(sys.argv[1], num)
         print(getCount(sys.argv[1]))
+    else:
+        print(getCount("Shuuen"), " ", getCount("Sonic"))
