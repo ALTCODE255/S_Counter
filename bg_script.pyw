@@ -66,7 +66,7 @@ icon = Icon(
     icon=Image.open("icon.ico"),
     title="S Counter",
     menu=Menu(
-        MenuItem("Restart", restartSelf()),
+        MenuItem("Restart", lambda: restartSelf()),
         MenuItem("Exit", lambda: icon.stop()),
     ),
 )
