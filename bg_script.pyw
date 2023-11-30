@@ -34,6 +34,11 @@ def showUpdateToast(col: str):
     )
 
 
+def restartSelf():
+    icon.stop()
+    os.system("s_counter.bat")
+
+
 sonic = list(map("".join, product(*zip("sonic".upper(), "sonic".lower()))))
 shuuen = list(map("".join, product(*zip("shuuen".upper(), "shuuen".lower()))))
 
@@ -61,8 +66,8 @@ icon = Icon(
     icon=Image.open("icon.ico"),
     title="S Counter",
     menu=Menu(
-        MenuItem("Restart", lambda: os.system("s_counter.bat")),
-        MenuItem("Exit", lambda: os.system("taskkill /f /IM pythonw3.11.exe")),
+        MenuItem("Restart", lambda: restartSelf()),
+        MenuItem("Exit", lambda: icon.stop()),
     ),
 )
 icon.run()
