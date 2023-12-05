@@ -1,6 +1,7 @@
 import os
 from itertools import product
 from string import printable
+import sys
 
 import keyboard
 import paramiko
@@ -36,7 +37,12 @@ def showUpdateToast(col: str):
 
 def restartSelf():
     icon.stop()
-    os.system("s_counter.bat")
+    os.execv(sys.executable, ['python'] + sys.argv)
+
+
+def killSelf():
+    icon.stop()
+    os._exit(0)
 
 
 sonic = list(map("".join, product(*zip("sonic".upper(), "sonic".lower()))))
@@ -67,7 +73,7 @@ icon = Icon(
     title="S Counter",
     menu=Menu(
         MenuItem("Restart", lambda: restartSelf()),
-        MenuItem("Exit", lambda: icon.stop()),
+        MenuItem("Exit", lambda: killSelf()),
     ),
 )
 icon.run()
