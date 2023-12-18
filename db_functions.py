@@ -29,9 +29,9 @@ def getStatistics() -> tuple[dict]:
     cursor = sqliteConnection.cursor()
     cursor.execute(
         """SELECT
-                        SUM(Shuuen), ROUND(AVG(Shuuen), 2), MAX(Shuuen),
-                        SUM(Sonic), ROUND(AVG(Sonic), 2), MAX(Sonic)
-                    FROM S_Counter"""
+            SUM(Shuuen), ROUND(AVG(Shuuen), 2), MAX(Shuuen),
+            SUM(Sonic), ROUND(AVG(Sonic), 2), MAX(Sonic)
+        FROM S_Counter"""
     )
     values_tuple = cursor.fetchone()
     cursor.close()
