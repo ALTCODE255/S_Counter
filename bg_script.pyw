@@ -63,8 +63,8 @@ for case in shuuen:
         match_suffix=True,
     )
 
-keyboard.add_hotkey("alt+1", lambda: showUpdateToast("Sonic"))
-keyboard.add_hotkey("alt+2", lambda: showUpdateToast("Shuuen"))
+keyboard.add_hotkey("ctrl+alt+1", lambda: showUpdateToast("Sonic"), suppress=True)
+keyboard.add_hotkey("ctrl+alt+2", lambda: showUpdateToast("Shuuen"), suppress=True)
 
 
 icon = Icon(
