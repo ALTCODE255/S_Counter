@@ -1,4 +1,3 @@
-import os
 from itertools import product
 from string import printable
 import sys
@@ -63,8 +62,8 @@ for case in shuuen:
         match_suffix=True,
     )
 
-keyboard.add_hotkey("ctrl+alt+1", lambda: showUpdateToast("Sonic"), suppress=True)
-keyboard.add_hotkey("ctrl+alt+2", lambda: showUpdateToast("Shuuen"), suppress=True)
+keyboard.add_hotkey("ctrl+alt+1", lambda: showUpdateToast("Sonic"))
+keyboard.add_hotkey("ctrl+alt+2", lambda: showUpdateToast("Shuuen"))
 
 
 icon = Icon(
