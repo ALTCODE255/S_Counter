@@ -1,6 +1,7 @@
 from itertools import product
 from string import printable
 import sys
+import os
 
 import keyboard
 import paramiko
@@ -62,8 +63,8 @@ for case in shuuen:
         match_suffix=True,
     )
 
-keyboard.add_hotkey("ctrl+1", lambda: showUpdateToast("Sonic"))
-keyboard.add_hotkey("ctrl+2", lambda: showUpdateToast("Shuuen"))
+keyboard.add_hotkey("pgup", showUpdateToast, args=["Sonic"])
+keyboard.add_hotkey("pgdn", showUpdateToast, args=["Shuuen"])
 
 
 icon = Icon(
