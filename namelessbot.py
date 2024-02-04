@@ -1,11 +1,13 @@
 import os
 from datetime import datetime
 
+import sys
+
 import tweepy
 from dotenv import load_dotenv
-
 from db_functions import addNewDayRow, getCount, getStatistics
 
+os.chdir(sys.path[0])
 load_dotenv()
 
 client = tweepy.Client(
