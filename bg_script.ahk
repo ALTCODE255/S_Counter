@@ -6,14 +6,10 @@ increment(str)
     return
 }
 
-:B0:sonic::
-    increment("Sonic")
+:B0X:sonic::increment("Sonic")
 
-:B0:shuuen::
-    increment("Shuuen")
+:B0X:shuuen::increment("Shuuen")
 
-!1::
-    increment("Sonic")
+!1::increment("Sonic")
 
-!2::
-    increment("Shuuen")
+!2::increment("Shuuen")
