@@ -39,7 +39,7 @@ def updateCount(inc_col: str):
     )
     count = _stdout.read().decode()
     notification.notify(
-        title="Counted!", message=f"{inc_col}: {count}", app_icon="icon.ico", timeout=2
+        title="Counted!", message=f"{inc_col}: {count}", app_icon="icon.ico", timeout=1
     )
 
 
