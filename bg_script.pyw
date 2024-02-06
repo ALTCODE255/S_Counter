@@ -15,6 +15,16 @@ load_dotenv()
 ahk = AHK()
 
 
+def connectSSH() -> paramiko.client.SSHClient:
+    HOST = os.getenv("EXTERNAL_IP")
+    PORT = os.getenv("PI_PORT")
+    client = paramiko.client.SSHClient()
+    client.load_system_host_keys()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(HOST, PORT, username="pi", key_filename="pi_key")
+    return client
+
+
 def updateCountS1():
     updateCount("Sonic")
 
@@ -24,18 +34,10 @@ def updateCountS2():
 
 
 def updateCount(inc_col: str):
-    HOST = os.getenv("EXTERNAL_IP")
-    PORT = os.getenv("PI_PORT")
-    client = paramiko.client.SSHClient()
-    client.load_system_host_keys()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(HOST, PORT, username="pi", key_filename="pi_key")
     _stdin, _stdout, _stderr = client.exec_command(
-        f"cd Projects/S_Counter && python db_functions.py {inc_col}"
+        "python Projects/S_Counter/db_functions.py " + inc_col
     )
     count = _stdout.read().decode()
-    client.close()
-
     notification.notify(
         title="Counted!", message=f"{inc_col}: {count}", app_icon="icon.ico", timeout=2
     )
@@ -44,12 +46,14 @@ def updateCount(inc_col: str):
 def restartSelf():
     icon.stop()
     ahk.stop_hotkeys()
+    client.close()
     os.execv(sys.executable, ['python'] + sys.argv)
 
 
 def killSelf():
     icon.stop()
     ahk.stop_hotkeys()
+    client.close()
     os._exit(0)
 
 
@@ -83,6 +87,8 @@ icon = Icon(
         MenuItem("Exit", lambda: killSelf()),
     ),
 )
+
+client = connectSSH()
 ahk.start_hotkeys()
 icon.run()
 keyboard.wait()

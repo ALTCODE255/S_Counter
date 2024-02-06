@@ -1,5 +1,6 @@
 import sqlite3
 import sys
+import os
 from datetime import datetime, timedelta
 
 
@@ -66,6 +67,7 @@ def addNewDayRow():
 
 
 if __name__ == "__main__":
+    os.chdir(sys.path[0])
     if len(sys.argv) > 1:
         num = sys.argv[2] if len(sys.argv) > 2 else 1
         incCounter(sys.argv[1], num)
