@@ -6,9 +6,9 @@ increment(str)
     return
 }
 
-:B0X:sonic::increment("Sonic")
+:B0X?*:sonic::increment("Sonic")
 
-:B0X:shuuen::increment("Shuuen")
+:B0X?*:shuuen::increment("Shuuen")
 
 !1::increment("Sonic")
 
