@@ -1,10 +1,11 @@
 import os
-from datetime import datetime
-
 import sys
+from datetime import datetime
+from textwrap import dedent
 
 import tweepy
 from dotenv import load_dotenv
+
 from db_functions import addNewDayRow, getCount, getStatistics
 
 
@@ -15,19 +16,19 @@ def getTweetText() -> str:
     s2_stats = overall_stats[1]
     s1 = getCount("Shuuen")
     s2 = getCount("Sonic")
-    text = f"""\
-#namelessbot [{today}]
-Nameless said "Shuuen" {s1} time{'' if s1 == 1 else 's'} and "Sonic" {s2} time{'' if s2 == 1 else 's'} today.
+    text = dedent(f"""\
+                  #namelessbot [{today}]
+                  Nameless said "Shuuen" {s1} time{'' if s1 == 1 else 's'} and "Sonic" {s2} time{'' if s2 == 1 else 's'} today.
 
-["Shuuen" Stats]
-- Total: {s1_stats["SUM"]}
-- Average: {s1_stats["AVG"]}
-- Personal Best: {s1_stats["MAX"]}
+                  ["Shuuen" Stats]
+                  - Total: {s1_stats["SUM"]}
+                  - Average: {s1_stats["AVG"]}
+                  - Personal Best: {s1_stats["MAX"]}
 
-["Sonic" Stats]
-- Total: {s2_stats["SUM"]}
-- Average: {s2_stats["AVG"]}
-- Personal Best: {s2_stats["MAX"]}"""
+                  ["Sonic" Stats]
+                  - Total: {s2_stats["SUM"]}
+                  - Average: {s2_stats["AVG"]}
+                  - Personal Best: {s2_stats["MAX"]}""")
     return text
 
 
