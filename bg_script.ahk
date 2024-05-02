@@ -2,7 +2,7 @@ SetWorkingDir %A_ScriptDir%
 
 increment(str)
 {
-    Run, pythonw increment.pyw %str%
+    Run, pythonw increment.py %str%
     return
 }
 
