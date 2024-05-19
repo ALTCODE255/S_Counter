@@ -2,22 +2,22 @@ import os
 
 from dotenv import dotenv_values, load_dotenv
 from flask import Flask
-from flask_httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPTokenAuth
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from db_functions import getCount, incCounter
 
-
 app = Flask(__name__)
-auth = HTTPBasicAuth()
+auth = HTTPTokenAuth(scheme='Bearer')
 load_dotenv()
 config = dotenv_values()
 app.config.from_mapping(config)
 
 
-@auth.verify_password
-def verify_password(username, password):
-    if username == app.config["USER"] and password == app.config["PASSWORD"]:
-        return username
+@auth.verify_token
+def verify_token(token):
+    if token == config.get("TOKEN"):
+        return True
 
 
 @app.route("/sonic")
@@ -35,4 +35,6 @@ def incrementShuuen():
 
 
 if __name__ == "__main__":
-    app.run(port=os.getenv("PORT"), host=os.getenv("HOST"))
+    from waitress import serve
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+    serve(app, port=os.getenv("PORT"), host=os.getenv("HOST"))
