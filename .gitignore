@@ -1,5 +1,4 @@
 .env
 counter.db
-S_Counter.md
 __pycache__/
 *.pem
