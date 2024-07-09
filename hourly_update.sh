@@ -2,4 +2,6 @@
 cd "$(dirname "$0")"
 export $(xargs < .env)
 new_content=$(sqlite3 -markdown counter.db "SELECT * FROM S_Counter ORDER BY Date Desc")
-echo "$new_content" | gh gist edit f674d02b89b93cdeb51ea782e03f06ff -f S_Counter.md -
+if [ "$(curl https://gist.githubusercontent.com/ALTCODE255/f674d02b89b93cdeb51ea782e03f06ff/raw/ 2>/dev/null | head -3)" != "$(echo "$new_content" | head -3)" ]; then
+    echo "$new_content" | gh gist edit f674d02b89b93cdeb51ea782e03f06ff -f S_Counter.md -
+fi
