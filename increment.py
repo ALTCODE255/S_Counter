@@ -7,11 +7,16 @@ from plyer import notification
 
 
 def updateCount(inc_col: str):
-    response = requests.get(os.getenv("URL") + inc_col.lower(), headers={"Authorization": os.getenv("HEADER_AUTH")}, verify="cert.pem")
-    count = response.content.decode("utf-8")
-    notification.notify(
-        title="Counted!", message=f"{inc_col}: {count}", timeout=1
+    response = requests.post(
+        os.getenv("URL") + "/increment",
+        headers={
+            "Authorization": os.getenv("HEADER_AUTH"),
+            "inc-col": inc_col
+        },
+        verify="cert.pem",
     )
+    count = response.content.decode("utf-8")
+    notification.notify(title="Counted!", message=f"{inc_col}: {count}", timeout=1)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import os
 
 from dotenv import dotenv_values, load_dotenv
-from flask import Flask
+from flask import Flask, request
 from flask_httpauth import HTTPTokenAuth
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -20,18 +20,13 @@ def verify_token(token):
         return True
 
 
-@app.route("/sonic")
+@app.route("/increment", methods=["POST"])
 @auth.login_required
-def incrementSonic():
-    incCounter("Sonic", 1)
-    return str(getCount("Sonic"))
-
-
-@app.route("/shuuen")
-@auth.login_required
-def incrementShuuen():
-    incCounter("Shuuen", 1)
-    return str(getCount("Shuuen"))
+def s_counter():
+    if request.method == 'POST':
+        word = request.headers["inc-col"]
+        incCounter(word, 1)
+        return str(getCount(word))
 
 
 if __name__ == "__main__":
