@@ -1,6 +1,6 @@
+import os
 import sqlite3
 import sys
-import os
 from datetime import datetime, timedelta
 
 
@@ -25,7 +25,7 @@ def incCounter(col: str, num: int):
     sqliteConnection.close()
 
 
-def getStatistics() -> tuple[dict]:
+def getStatistics() -> tuple[dict[str, str]]:
     sqliteConnection = sqlite3.connect("counter.db")
     cursor = sqliteConnection.cursor()
     cursor.execute(
