@@ -1,15 +1,21 @@
-SetWorkingDir %A_ScriptDir%
+#Requires AutoHotkey v2.0.11+
 
-increment(str)
-{
-    Run, pythonw increment.py %str%
-    return
+:B0X?*:sonic::updateCount("Sonic")
+:B0X?*:shuuen::updateCount("Shuuen")
+
+!1::updateCount("Sonic")
+!2::updateCount("Shuuen")
+
+URL := IniRead("vars.ini", "HTTP", "URL")
+AUTH := IniRead("vars.ini", "HTTP", "HEADER_AUTH")
+
+updateCount(col) {
+    req := ComObject('WinHttp.WinHttpRequest.5.1')
+    req.Open("POST", URL "/increment")
+    req.SetRequestHeader("Authorization", AUTH)
+    req.SetRequestHeader("inc-col", col)
+    req.Option[4] := "&H3300"
+    req.Send()
+    req.WaitForResponse()
+    TrayTip col ": " req.ResponseText
 }
-
-:B0X?*:sonic::increment("Sonic")
-
-:B0X?*:shuuen::increment("Shuuen")
-
-!1::increment("Sonic")
-
-!2::increment("Shuuen")

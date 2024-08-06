@@ -1,4 +1,4 @@
 .env
 counter.db
 __pycache__/
-*.pem
+vars.ini
