@@ -1,11 +1,11 @@
 import os
+import sqlite3
+from contextlib import closing
 
 from dotenv import dotenv_values, load_dotenv
 from flask import Flask, request
 from flask_httpauth import HTTPTokenAuth
 from werkzeug.middleware.proxy_fix import ProxyFix
-
-from db_functions import getCount, incCounter
 
 app = Flask(__name__)
 auth = HTTPTokenAuth(scheme="Bearer")
@@ -22,20 +22,40 @@ def verify_token(token):
 
 @app.route("/increment", methods=["POST"])
 @auth.login_required
-def increment():
-    word = request.headers["inc-col"]
-    incCounter(word, 1)
-    return str(getCount(word))
+def incCount():
+    req_data = request.get_json()
+    if req_data["s_word"] in ("Sonic", "Shuuen") and req_data.get("amount"):
+        with closing(sqlite3.connect("counter.db")) as conn, conn:
+            conn.execute("INSERT OR IGNORE INTO S_Counter DEFAULT VALUES")
+            result = conn.execute(
+                f"UPDATE S_Counter \
+                  SET {req_data['s_word']} = {req_data['s_word']} + {req_data['amount']} \
+                  WHERE Date = date('now', 'localtime') \
+                  RETURNING {req_data['s_word']}"
+            ).fetchone()[0]
+            return str(result)
+    else:
+        return "Invalid body params. Please include valid 's_word' and 'amount'."
 
 
 @app.route("/get_count/<col>", methods=["GET"])
 @auth.login_required
-def get_count(col):
-    return str(getCount(col))
+def getCount(col: str):
+    if col in ("Sonic", "Shuuen"):
+        with closing(sqlite3.connect("counter.db")) as conn, conn:
+            conn.execute("INSERT OR IGNORE INTO S_Counter DEFAULT VALUES")
+            result = conn.execute(
+                f"SELECT {col} \
+                  FROM S_Counter \
+                  WHERE Date = date('now', 'localtime')"
+            ).fetchone()[0]
+        return str(result)
+    else:
+        return f"Invalid URL param /get_count/{col}"
 
 
 if __name__ == "__main__":
     from waitress import serve
 
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
-    serve(app, port=os.getenv("PORT"), host=os.getenv("HOST"))
+    serve(app, port=os.getenv("PORT"), host="0.0.0.0")
